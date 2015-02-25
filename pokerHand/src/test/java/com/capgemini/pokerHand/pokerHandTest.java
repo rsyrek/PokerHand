@@ -5,10 +5,6 @@ import java.util.List;
 import org.fest.assertions.Assertions;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 public class pokerHandTest {
 	List<Card> cards1 = new ArrayList<Card>();
 	

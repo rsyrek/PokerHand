@@ -28,7 +28,7 @@ public class Player {
 		rankValues = new ArrayList<Integer>();
 		setHand();
 	}
-	
+
 	public boolean isWinner(Player otherPlayer) {
 		int index = 0, index2 = 0;
 		for (Hand h : this.hands){
@@ -61,7 +61,8 @@ public class Player {
 				}
 			}
 		}
-		System.err.println("Remis!");
+		System.err.println("Remis!" + this.hands.toString() + this.rankValues.toString());
+		System.err.println(otherPlayer.hands.toString() + otherPlayer.rankValues.toString());
 		return false;
 	}
 	
