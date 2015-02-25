@@ -1,5 +1,6 @@
 package com.capgemini.pokerHand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -23,12 +24,13 @@ public class Player {
 
 	public Player(List<Card> cards){
 		this.cards = cards;
+		hands = new ArrayList<Hand>();
+		rankValues = new ArrayList<Integer>();
 		setHand();
 	}
 	
 	public boolean isWinner(Player otherPlayer) {
 		int index = 0, index2 = 0;
-		//int index2;
 		for (Hand h : this.hands){
 			if (h.isGreater(otherPlayer.hands.get(index))) {
 				return true;
@@ -68,16 +70,27 @@ public class Player {
 		boolean stillHaveSomething = true;
 		cards.sort(new CardComparator());
 		while(stillHaveSomething){
-			isThereRoyalFlush();
-			isThereStraightFlush();
-			isThere4();
-			isThereFull();
-			isThereFlush();
-			isThereStraight();
-			isThere3();
-			isThere2Pairs();
-			isTherePair();
+			if (cards.size() == 5)
+				isThereRoyalFlush();
+			if (cards.size() == 5)
+				isThereStraightFlush();
+			if (cards.size() >= 4)
+				isThere4();
+			if (cards.size() == 5)
+				isThereFull();
+			if (cards.size() == 5)
+				isThereFlush();
+			if (cards.size() == 5)
+				isThereStraight();
+			if (cards.size() >= 3)
+				isThere3();
+			if (cards.size() >= 4)
+				isThere2Pairs();
+			if (cards.size() >= 2)
+				isTherePair();
+			if (!cards.isEmpty())
 			stillHaveSomething = isThereHighCard(index);
+			if (cards.isEmpty()) break;
 		}
 	}
 
@@ -96,8 +109,8 @@ public class Player {
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank()){
 				hands.add(Hand.ONE_PAIR);
 				rankValues.add(cards.get(i).getRank());
-				cards.remove(i);
 				cards.remove(i + 1);
+				cards.remove(i);
 				break;
 			}
 		}
@@ -107,7 +120,7 @@ public class Player {
 		boolean flag = false;
 		int index1 = -1;
 		int index2 = -1;
-		for(int i = 0; i < 2; i++){
+		for(int i = 0; i < cards.size() - 3; i++){
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank()){
 				index1 = i;
 				for(int j = i + 2; j < cards.size() - 1; j++){
@@ -124,29 +137,29 @@ public class Player {
 			hands.add(Hand.TWO_PAIRS);
 			rankValues.add(Math.max(cards.get(index1).getRank(), cards.get(index2).getRank()));
 			rankValues.add(Math.min(cards.get(index1).getRank(), cards.get(index2).getRank()));
-			cards.remove(index1);
-			cards.remove(index1 + 1);
-			cards.remove(index2);
 			cards.remove(index2 + 1);
+			cards.remove(index2);
+			cards.remove(index1 + 1);
+			cards.remove(index1);
 		}
 	}
 
 	private void isThere3() {
-		for(int i = 0; i < 3 ; i++){
+		for(int i = 0; i < cards.size() - 2 ; i++){
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank() && 
 					cards.get(i + 1).getRank() == cards.get(i + 2).getRank()){
 				hands.add(Hand.THREE);
 				rankValues.add(cards.get(i).getRank());
-				cards.remove(i);
-				cards.remove(i + 1);
 				cards.remove(i + 2);
+				cards.remove(i + 1);
+				cards.remove(i);
 				break;
 			}
 		}
 	}
 
 	private void isThereStraight() {
-		if (cards.get(0).getRank() +1 == cards.get(1).getRank() &&
+		if (cards.get(0).getRank() + 1 == cards.get(1).getRank() &&
 				cards.get(1).getRank() + 1 == cards.get(2).getRank() &&
 						cards.get(2).getRank() + 1 == cards.get(3).getRank() &&
 								cards.get(3).getRank() + 1 == cards.get(4).getRank()){
@@ -171,39 +184,53 @@ public class Player {
 	}
 
 	private void isThereFull() {
-		for(int i = 0; i < 3; i++){
+		int index1 = -1, index2 = -1;
+		boolean flag1 = false, flag2 = false;
+		for(int i = 0; i < cards.size() - 2; i++){
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank() && 
 					cards.get(i + 1).getRank() == cards.get(i + 2).getRank()){
-				hands.add(Hand.THREE);
-				rankValues.add(cards.get(i).getRank());
-				cards.remove(i);
-				cards.remove(i + 1);
-				cards.remove(i + 2);
+				index1 = i;		
 				break;
 			}
 		}
 		for(int i = 0; i < cards.size() - 1; i++){
+			if(i != index1 && i != index1 + 1 && i != index1 + 2)
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank()){
-				hands.add(Hand.ONE_PAIR);
-				rankValues.add(cards.get(i).getRank());
-				cards.remove(i);
-				cards.remove(i + 1);
+				index2 = i;
 				break;
+			}
+		}
+		if (flag1 && flag2){
+			rankValues.add(cards.get(index1).getRank());
+			rankValues.add(cards.get(index2).getRank());
+			if(index2 > index1){
+				cards.remove(index2 + 1);
+				cards.remove(index2);
+				cards.remove(index1 + 2);
+				cards.remove(index1 + 1);
+				cards.remove(index1);
+			}
+			else{
+				cards.remove(index1 + 2);
+				cards.remove(index1 + 1);
+				cards.remove(index1);
+				cards.remove(index2 + 1);
+				cards.remove(index2);
 			}
 		}
 	}
 
 	private void isThere4() {
-		for(int i = 0; i < 2; i++){
+		for(int i = 0; i < cards.size() - 3; i++){
 			if(cards.get(i).getRank() == cards.get(i + 1).getRank() && 
 					cards.get(i + 1).getRank() == cards.get(i + 2).getRank() && 
 							cards.get(i + 2).getRank() == cards.get(i + 3).getRank()){
 				hands.add(Hand.FOUR);
 				rankValues.add(cards.get(i).getRank());
-				cards.remove(i);
-				cards.remove(i + 1);
-				cards.remove(i + 2);
 				cards.remove(i + 3);
+				cards.remove(i + 2);
+				cards.remove(i + 1);
+				cards.remove(i);
 				break;
 			}
 		}
@@ -211,7 +238,7 @@ public class Player {
 
 	private void isThereStraightFlush() {
 		boolean flag = false;
-		if (cards.get(0).getRank() +1 == cards.get(1).getRank() &&
+		if (cards.get(0).getRank() + 1 == cards.get(1).getRank() &&
 				cards.get(1).getRank() + 1 == cards.get(2).getRank() &&
 						cards.get(2).getRank() + 1 == cards.get(3).getRank() &&
 								cards.get(3).getRank() + 1 == cards.get(4).getRank()){
