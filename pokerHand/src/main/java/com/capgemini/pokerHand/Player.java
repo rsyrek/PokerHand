@@ -4,23 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-	/*private Card card1;
-	private Card card2;
-	private Card card3;
-	private Card card4;
-	private Card card5;*/
 	private List<Card> cards;
 	private List<Hand> hands;
 	private List<Integer> rankValues;
-
-	/*public Player(Card card1, Card card2, Card card3, Card card4, Card card5) {
-		this.card1 = card1;
-		this.card2 = card2;
-		this.card3 = card3;
-		this.card4 = card4;
-		this.card5 = card5;
-		setHand();
-	}*/
 
 	public Player(List<Card> cards){
 		this.cards = cards;
