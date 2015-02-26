@@ -22,18 +22,23 @@ public class Main {
 		Player p2;
 		Card card = null;
 		int counter = 0;
+		System.err.println("Start");
 		for(int j = 0; j < 1000; j++){
-			for(int i = 0; i <= 5; i++){
+			cards1.clear();
+			cards2.clear();
+			for(int i = 0; i < 5; i++){
 				try {
 					card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
+					file.read();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				cards1.add(card);
 			}
-			for(int i = 0; i <= 5; i++){
+			for(int i = 0; i < 5; i++){
 				try {
 					card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
+					file.read();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -91,7 +96,6 @@ public class Main {
 		case 'A':
 			return Card.A;
 		default:
-			System.out.println((int) c + " " + j);
 			return (int) c;
 		}
 	}
