@@ -20,6 +20,7 @@ public class Main {
 		List<Card> cards2 = new ArrayList<Card>();
 		Player p1;
 		Player p2;
+		Referee ref;
 		Card card = null;
 		int counter = 0;
 		System.err.println("Start");
@@ -27,30 +28,28 @@ public class Main {
 			cards1.clear();
 			cards2.clear();
 			for(int i = 0; i < 5; i++){
-				try {
-					card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
-					file.read();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				cards1.add(card);
+				cards1.add(cardReader(file, card, j));
 			}
 			for(int i = 0; i < 5; i++){
-				try {
-					card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
-					file.read();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				cards2.add(card);
+				cards2.add(cardReader(file, card, j));
 			}
 			p1 = new Player(cards1);
 			p2 = new Player(cards2);
-			if(p1.isWinner(p2)) counter++;
+			ref = new Referee(p1, p2);
+			if(ref.isFirstPlayerWinner()) counter++;
 		}
 		System.out.println("Wynik: " + counter);
 	}
 
+	public static Card cardReader(InputStream file, Card card, int j) {
+		try {
+			card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
+			file.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return card;
+	}
 
 	private static int readSuit(char c) {
 		switch(c){
@@ -69,22 +68,6 @@ public class Main {
 
 	private static int readRank(char c, int j) {
 		switch(c){
-		case '2':
-			return 2;
-		case '3':
-			return 3;
-		case '4':
-			return 4;
-		case '5':
-			return 5;
-		case '6':
-			return 6;
-		case '7':
-			return 7;
-		case '8':
-			return 8;
-		case '9':
-			return 9;
 		case 'T':
 			return Card.T;
 		case 'J':
@@ -96,8 +79,7 @@ public class Main {
 		case 'A':
 			return Card.A;
 		default:
-			return (int) c;
+			return Integer.parseInt("" + c);
 		}
 	}
-
 }

@@ -15,41 +15,16 @@ public class Player {
 		setHand();
 	}
 
-	public boolean isWinner(Player otherPlayer) {
-		int index = 0, index2 = 0;
-		for (Hand h : this.hands){
-			if (h.isGreater(otherPlayer.hands.get(index))) {
-				return true;
-			}
-			else if(otherPlayer.hands.get(index).isGreater(h)){
-				return false;
-			}
-			else {
-				
-				if(h == Hand.TWO_PAIRS || h == Hand.FULL){
-					if(this.rankValues.get(index2) > otherPlayer.rankValues.get(index2)){
-						return true;
-					}
-					else if(this.rankValues.get(index2) < otherPlayer.rankValues.get(index2)){
-						return false;
-					}
-					index2++;
-				}
-				if(this.rankValues.get(index2) > otherPlayer.rankValues.get(index2)){
-					return true;
-				}
-				else if(this.rankValues.get(index2) < otherPlayer.rankValues.get(index2)){
-					return false;
-				}
-				else {
-					index++;
-					index2++;
-				}
-			}
-		}
-		System.err.println("Remis!" + this.hands.toString() + this.rankValues.toString());
-		System.err.println(otherPlayer.hands.toString() + otherPlayer.rankValues.toString());
-		return false;
+	public List<Card> getCards(){
+		return this.cards;
+	}
+	
+	public List<Hand> getHands(){
+		return this.hands;
+	}
+	
+	public List<Integer> getRankValues(){
+		return this.rankValues;
 	}
 	
 	private void setHand(){

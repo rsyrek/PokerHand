@@ -7,9 +7,10 @@ import org.junit.Test;
 
 public class pokerHandTest {
 	List<Card> cards1 = new ArrayList<Card>();
-	
 	List<Card> cards2 = new ArrayList<Card>();
-	
+	Referee ref;
+	Player p1;
+	Player p2;
 	
 	@Test
 	public void shouldReturnFalseWhenHand1FromProjectEuler() {
@@ -23,7 +24,7 @@ public class pokerHandTest {
 		cards1.add(c3);
 		cards1.add(c4);
 		cards1.add(c5);
-		Player p1 = new Player(cards1);
+		p1 = new Player(cards1);
 		Card c6 = new Card(2, Card.C);
 		Card c7 = new Card(3, Card.S);
 		Card c8 = new Card(8, Card.S);
@@ -34,8 +35,9 @@ public class pokerHandTest {
 		cards2.add(c8);
 		cards2.add(c9);
 		cards2.add(c10);
-		Player p2 = new Player(cards2);
-		Assertions.assertThat(p1.isWinner(p2)).isEqualTo(false);
+		p2 = new Player(cards2);
+		ref = new Referee(p1, p2);
+		Assertions.assertThat(ref.isFirstPlayerWinner()).isEqualTo(false);
 	}
 
 	@Test
@@ -50,7 +52,7 @@ public class pokerHandTest {
 		cards1.add(c3);
 		cards1.add(c4);
 		cards1.add(c5);
-		Player p1 = new Player(cards1);
+		p1 = new Player(cards1);
 		Card c6 = new Card(2, Card.C);
 		Card c7 = new Card(5, Card.C);
 		Card c8 = new Card(7, Card.D);
@@ -61,8 +63,9 @@ public class pokerHandTest {
 		cards2.add(c8);
 		cards2.add(c9);
 		cards2.add(c10);
-		Player p2 = new Player(cards2);
-		Assertions.assertThat(p1.isWinner(p2)).isEqualTo(true);
+		p2 = new Player(cards2);
+		ref = new Referee(p1, p2);
+		Assertions.assertThat(ref.isFirstPlayerWinner()).isEqualTo(true);
 	}
 	
 	@Test
@@ -77,7 +80,7 @@ public class pokerHandTest {
 		cards1.add(c3);
 		cards1.add(c4);
 		cards1.add(c5);
-		Player p1 = new Player(cards1);
+		p1 = new Player(cards1);
 		Card c6 = new Card(3, Card.D);
 		Card c7 = new Card(6, Card.D);
 		Card c8 = new Card(7, Card.D);
@@ -88,8 +91,9 @@ public class pokerHandTest {
 		cards2.add(c8);
 		cards2.add(c9);
 		cards2.add(c10);
-		Player p2 = new Player(cards2);
-		Assertions.assertThat(p1.isWinner(p2)).isEqualTo(false);
+		p2 = new Player(cards2);
+		ref = new Referee(p1, p2);
+		Assertions.assertThat(ref.isFirstPlayerWinner()).isEqualTo(false);
 	}
 
 	@Test
@@ -104,7 +108,7 @@ public class pokerHandTest {
 		cards1.add(c3);
 		cards1.add(c4);
 		cards1.add(c5);
-		Player p1 = new Player(cards1);
+		p1 = new Player(cards1);
 		Card c6 = new Card(3, Card.D);
 		Card c7 = new Card(6, Card.D);
 		Card c8 = new Card(7, Card.H);
@@ -115,8 +119,9 @@ public class pokerHandTest {
 		cards2.add(c8);
 		cards2.add(c9);
 		cards2.add(c10);
-		Player p2 = new Player(cards2);
-		Assertions.assertThat(p1.isWinner(p2)).isEqualTo(true);
+		p2 = new Player(cards2);
+		ref = new Referee(p1, p2);
+		Assertions.assertThat(ref.isFirstPlayerWinner()).isEqualTo(true);
 	}
 	
 	@Test
@@ -131,7 +136,7 @@ public class pokerHandTest {
 		cards1.add(c3);
 		cards1.add(c4);
 		cards1.add(c5);
-		Player p1 = new Player(cards1);
+		p1 = new Player(cards1);
 		Card c6 = new Card(3, Card.C);
 		Card c7 = new Card(3, Card.D);
 		Card c8 = new Card(3, Card.S);
@@ -142,7 +147,8 @@ public class pokerHandTest {
 		cards2.add(c8);
 		cards2.add(c9);
 		cards2.add(c10);
-		Player p2 = new Player(cards2);
-		Assertions.assertThat(p1.isWinner(p2)).isEqualTo(true);
+		p2 = new Player(cards2);
+		ref = new Referee(p1, p2);
+		Assertions.assertThat(ref.isFirstPlayerWinner()).isEqualTo(true);
 	}
 }
