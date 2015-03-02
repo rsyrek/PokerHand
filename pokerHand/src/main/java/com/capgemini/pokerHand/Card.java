@@ -1,6 +1,7 @@
 package com.capgemini.pokerHand;
 
-public class Card {
+
+public class Card implements Comparable<Card> {
 	private final int rank;
 	private final int suit;
 
@@ -28,5 +29,9 @@ public class Card {
 
 	public int getRank() {
 		return rank;
+	}
+
+	public int compareTo(Card paramT) {
+		return Integer.compare(this.rank, paramT.rank);
 	}
 }
