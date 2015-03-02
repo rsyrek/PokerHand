@@ -1,54 +1,49 @@
 package com.capgemini.pokerHand;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
 
-	public static void main(String[] args) {
-		InputStream file = null;
-		try {
-			file = new FileInputStream("C:/Users/rsyrek/Documents/GitHub/PokerHand/pokerHand/p054_poker.txt");
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
+	public static void main(String[] args) throws FileNotFoundException, IOException {
 		List<Card> cards1 = new ArrayList<Card>();
 		List<Card> cards2 = new ArrayList<Card>();
-		Player p1;
-		Player p2;
-		Referee ref;
-		Card card = null;
+		Player p1 = null;
+		Player p2 = null ;
+		Referee ref = null;
 		int counter = 0;
-		System.err.println("Start");
-		for(int j = 0; j < 1000; j++){
-			cards1.clear();
-			cards2.clear();
-			for(int i = 0; i < 5; i++){
-				cards1.add(cardReader(file, card, j));
+		try(BufferedReader br = new BufferedReader(new FileReader(Main.class.getClassLoader().getResource("p054_poker.txt").getFile()))) {
+			String line = br.readLine();
+			
+			System.err.println("Start");
+			while(line !=null) {
+				String[] cards = line.split(" ");
+				for(int i = 0; i < 5; i++){
+					cards1.add(cardReader(cards[i]));
+				}
+				for(int i = 5; i < 10; i++){
+					cards2.add(cardReader(cards[i]));
+				}
+				p1 = new Player(cards1);
+				p2 = new Player(cards2);
+				ref = new Referee(p1, p2);
+				if(ref.isFirstPlayerWinner()) {
+					counter++;
+				}
+				line = br.readLine();
+				
 			}
-			for(int i = 0; i < 5; i++){
-				cards2.add(cardReader(file, card, j));
-			}
-			p1 = new Player(cards1);
-			p2 = new Player(cards2);
-			ref = new Referee(p1, p2);
-			if(ref.isFirstPlayerWinner()) counter++;
+			System.out.println("Wynik: " + counter);
 		}
-		System.out.println("Wynik: " + counter);
+		
 	}
 
-	public static Card cardReader(InputStream file, Card card, int j) {
-		try {
-			card = new Card(readRank((char)file.read(), j), readSuit((char)file.read()));
-			file.read();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return card;
+	private static Card cardReader(String cardString) {
+		return new Card(readRank(cardString.charAt(0)), readSuit(cardString.charAt(1)));
 	}
 
 	private static int readSuit(char c) {
@@ -66,7 +61,7 @@ public class Main {
 		}
 	}
 
-	private static int readRank(char c, int j) {
+	private static int readRank(char c) {
 		switch(c){
 		case 'T':
 			return Card.T;

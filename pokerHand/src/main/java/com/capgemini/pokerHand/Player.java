@@ -1,6 +1,7 @@
 package com.capgemini.pokerHand;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Player {
@@ -30,7 +31,7 @@ public class Player {
 	private void setHand(){
 		int index = 0;
 		boolean stillHaveSomething = true;
-		cards.sort(new CardComparator());
+		Collections.sort(cards);
 		while(stillHaveSomething){
 			if (cards.size() == 5)
 				isThereRoyalFlush();
